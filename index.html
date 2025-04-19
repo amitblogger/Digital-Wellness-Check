@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Free Mobile Addiction Checker & Screen Time Calculator. Select apps, enter hours, get your Dependence Score (0–100), risk band, and detailed tips."/>
+  <meta name="keywords" content="mobile addiction checker, screen time calculator, phone dependence score, digital wellness, am I addicted to phone, reduce screen time, app usage tracker, screen time research, digital habits, behavioral psychology, technology addiction"/>
+  <title>Digital Wellness Check | Screen Time Calculator</title>
+  <style>
+    /* CSS Variables for easier theming */
+    :root {
+      --primary-color: royalblue;
+      --secondary-color: #FF9800; /* Orange */
+      --background-color: #f4f7f6; /* Slightly softer background */
+      --foreground-color: #fff;
+      --text-color: #333;
+      --text-muted-color: #555;
+      --border-color: #e0e0e0; /* Slightly softer border */
+      --shadow-color: rgba(0, 0, 0, .08); /* Softer shadow */
+      --header-height: 6rem; /* Adjusted header height */
+      --border-radius: 12px; /* Unified border radius */
+
+      /* Added for focus shadows */
+      --primary-color-rgb: 65, 105, 225; /* royalblue */
+
+      /* Added for section separation */
+      --section-margin-y: 1.5rem;
+    }
+
+    /* Dark theme variables */
+    .dark {
+      --background-color: #1e1e1e; /* Dark background */
+      --foreground-color: #2b2b2b; /* Darker background for elements */
+      --text-color: #e0e0e0; /* Light text */
+      --text-muted-color: #aaaaaa; /* Muted text */
+      --border-color: #3a3a3a; /* Dark borders */
+      --shadow-color: rgba(255, 255, 255, .06); /* Dark mode shadow */
+      --primary-color: #7aafff; /* Lighter royalblue for dark mode */
+       /* Added for dark mode focus shadows */
+      --primary-color-rgb: 122, 175, 255; /* lighter blue */
+    }
+
+    /* Basic Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      background-color: var(--background-color);
+      color: var(--text-color);
+      padding-top: var(--header-height); /* Space for fixed header */
+      line-height: 1.6;
+      transition: background-color 0.4s ease, color 0.4s ease; /* Smoother theme transition */
+    }
+
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+
+    /* --- MODIFIED: Header Styling --- */
+    header {
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 95%;
+      max-width: 800px;
+      background: var(--primary-color);
+      color: var(--foreground-color);
+      padding: 1.2rem 1.8rem; /* More padding */
+      border-radius: var(--border-radius);
+      box-shadow: 0 6px 16px var(--shadow-color); /* Stronger shadow */
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem; /* Increased gap */
+    }
+
+     header .title-block {
+         display: flex;
+         flex-direction: column;
+         align-items: flex-start;
+         flex-grow: 1; /* Allow title block to grow */
+     }
+
+    header h1 {
+      color: var(--foreground-color);
+      font-size: 2rem; /* Larger title */
+      margin: 0;
+      line-height: 1.2;
+       font-weight: 700; /* Make title bolder */
+    }
+
+    header .tagline {
+        font-size: 1.1rem; /* Slightly larger tagline */
+        color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+        margin-top: 0.3rem;
+        font-weight: 400; /* Regular weight for tagline */
+    }
+
+    header .header-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem; /* Increased gap */
+        flex-wrap: wrap; /* Allow controls to wrap */
+        justify-content: flex-end; /* Align controls to the right */
+         flex-shrink: 0; /* Prevent controls from shrinking too much */
+    }
+
+    header .nav, footer .nav {
+      display: flex;
+      gap: 0.6rem; /* Slightly larger gap in nav */
+      justify-content: center;
+      flex-wrap: wrap; /* Allow nav buttons to wrap */
+    }
+
+    header .nav button, footer .nav button, #theme-toggle {
+      background: none;
+      border: none;
+      color: var(--foreground-color);
+      font-weight: 600; /* Semi-bold */
+      padding: 0.6rem 1rem; /* Increased padding */
+      cursor: pointer;
+      border-radius: 8px; /* Slightly smaller radius for nav buttons */
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-size: 0.95rem; /* Slightly larger font */
+    }
+    .dark header .nav button, .dark header #theme-toggle {
+       color: var(--text-color); /* Use text color in dark mode header nav */
+    }
+    .dark footer .nav button {
+        color: var(--text-color);
+    }
+
+
+    header .nav button.active {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    footer .nav button.active {
+        background-color: var(--border-color);
+        color: var(--primary-color);
+    }
+
+    header .nav button:hover, footer .nav button:hover, #theme-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    .dark header .nav button:hover, .dark header #theme-toggle:hover {
+        background-color: rgba(0, 0, 0, 0.2); /* Darken slightly on hover in dark mode */
+    }
+     .dark footer .nav button:hover {
+        background-color: var(--border-color); /* Use border color as hover bg in dark footer */
+    }
+
+
+    #theme-toggle {
+        font-size: 1.3rem; /* Slightly larger icon */
+        padding: 0.4rem 0.7rem;
+        border: 1px solid rgba(255,255,255,0.3); /* Subtle border */
+        border-radius: 8px; /* Match button radius */
+    }
+     .dark #theme-toggle {
+         border-color: rgba(0,0,0,0.3);
+     }
+     #theme-toggle:hover {
+        transform: rotate(15deg); /* Little rotation effect */
+        transition: transform 0.3s ease;
+     }
+      /* --- END MODIFIED: Header Styling --- */
+
+
+    /* Main Content */
+    main {
+      max-width: 800px;
+      margin: calc(var(--header-height) + var(--section-margin-y)) auto var(--section-margin-y) auto; /* Use variable margin */
+      padding: 0 1rem;
+      display: grid;
+      gap: var(--section-margin-y); /* Use variable gap */
+    }
+
+    section {
+      display: none; /* Hide sections by default */
+      background-color: var(--foreground-color);
+      padding: 2rem 2.5rem; /* More padding */
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px var(--shadow-color);
+      transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.4s ease, color 0.4s ease; /* Smooth transitions */
+      opacity: 0; /* Start hidden */
+      transform: translateY(20px); /* Start slightly down */
+    }
+
+    section.active {
+      display: block; /* Show active section */
+      opacity: 1; /* Fade in */
+      transform: translateY(0); /* Move up */
+    }
+
+    section h1, section h2 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      font-weight: 600; /* Semi-bold headings */
+    }
+     section h3 {
+        margin-top: var(--section-margin-y); /* Use variable margin */
+        margin-bottom: 0.8rem; /* Slightly more space */
+        color: var(--text-color); /* Changed to text color for prominence */
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.4rem; /* More padding */
+        font-weight: 600; /* Semi-bold */
+     }
+
+    .intro {
+      margin-bottom: var(--section-margin-y); /* Use variable margin */
+      color: var(--text-muted-color);
+    }
+
+    /* Calculator Form */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--section-margin-y); /* Use variable gap */
+    }
+
+    /* --- MODIFIED: Input Grid Layout Styling --- */
+    #rows {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem; /* Gap between rows */
+    }
+
+    .row {
+      display: grid;
+      /* App Select | Hours Input | Remove Btn */
+      grid-template-columns: 1fr auto auto;
+      gap: 1.2rem; /* Increased gap */
+      align-items: center;
+      padding: 1rem; /* Added padding */
+      border: 1px solid var(--border-color); /* Added border */
+      border-radius: var(--border-radius); /* Used unified border-radius */
+      background-color: var(--background-color); /* Base background for row */
+      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+       box-shadow: 0 2px 5px rgba(0,0,0,0.03); /* Subtle row shadow */
+    }
+     .dark .row {
+         background-color: var(--foreground-color); /* Darker background for row in dark mode */
+         box-shadow: none; /* Remove shadow in dark mode rows */
+     }
+
+
+    .row select.app-select,
+    .row input[type="number"] {
+      padding: 0.8rem 1rem; /* Increased padding */
+      border: 1px solid var(--border-color);
+      border-radius: 8px; /* Slightly smaller radius for inputs */
+      font-size: 1rem; /* Slightly larger font */
+      background-color: var(--foreground-color); /* Input background */
+      color: var(--text-color);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      -webkit-appearance: none; /* Remove default styling on some browsers */
+      -moz-appearance: none;
+      appearance: none;
+    }
+
+    /* Adjust input background based on row's background - Simplification */
+     .row select.app-select,
+     .row input[type="number"] {
+         background-color: var(--foreground-color);
+         color: var(--text-color);
+     }
+      .dark .row select.app-select,
+      .dark .row input[type="number"] {
+          background-color: var(--background-color); /* Inputs darker than row in dark mode */
+          color: var(--text-color);
+      }
+
+
+    .row input[type="number"] {
+        width: 7.5rem; /* Adjusted width */
+        text-align: center; /* Center align hours */
+        -moz-appearance: textfield; /* Ensure number input is wide enough in Firefox */
+    }
+     /* Hide stepper buttons */
+    .row input[type="number"]::-webkit-outer-spin-button,
+    .row input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+
+    .row select.app-select:focus,
+    .row input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 6px rgba(var(--primary-color-rgb), 0.5); /* Add subtle shadow on focus */
+        outline: none;
+    }
+
+    /* Custom styling for select dropdown arrow */
+    .row select.app-select {
+        background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 1rem center; /* Position further right */
+        background-size: 1.2rem;
+        padding-right: 3rem; /* Make space for the arrow */
+        cursor: pointer;
+    }
+     .dark .row select.app-select {
+        background-image: url('data:image/svg+xml;utf8,<svg fill="%23e0e0e0" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Light arrow in dark mode */
+     }
+
+
+    .row button.rem {
+      padding: 0.7rem 1rem; /* Increased padding */
+      background-color: var(--error-color);
+      border: none;
+      color: #fff;
+      border-radius: 8px; /* Match input radius */
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem; /* Match input font size */
+      transition: background-color 0.3s ease, opacity 0.3s ease;
+      display: flex; /* Use flex to center content */
+      justify-content: center;
+      align-items: center;
+      line-height: 1; /* Prevent text shifting */
+      flex-shrink: 0; /* Prevent button from shrinking */
+    }
+    .row button.rem:hover {
+        background-color: #c0392b; /* Darker red */
+        opacity: 0.9;
+    }
+    /* --- END MODIFIED Input Grid Layout Styling --- */
+
+
+    #addRow, #calculate {
+      padding: 0.8rem 1.5rem;
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: background-color 0.3s ease, opacity 0.3s ease;
+      align-self: flex-start;
+      margin-top: 1rem; /* Add space above buttons */
+    }
+     #addRow {
+        background-color: var(--secondary-color);
+        margin-top: 0.5rem; /* Less space above add row */
+     }
+     #addRow:hover {
+         background-color: #e68900; /* Darker orange */
+     }
+
+    #calculate {
+        background-color: var(--primary-color);
+        margin-top: 1rem; /* More space above calculate */
+    }
+     #calculate:hover {
+         background-color: #5b8de5; /* Darker primary */
+     }
+
+    .form-error {
+        color: var(--error-color);
+        font-weight: bold;
+        margin-top: 0.8rem; /* More space */
+        min-height: 1.4em; /* Slightly more height */
+        text-align: center;
+    }
+
+    /* Results Styling */
+    #result {
+      margin-top: var(--section-margin-y); /* Use variable margin */
+      border-top: 2px solid var(--primary-color);
+      padding-top: var(--section-margin-y); /* Use variable padding */
+      background-color: var(--background-color); /* Subtle background difference */
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    }
+    .dark #result {
+        background-color: var(--foreground-color); /* Use card background in dark mode */
+        box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
+    }
+
+
+    #result h2 {
+      margin-bottom: var(--section-margin-y); /* More space below main heading */
+      color: var(--primary-color);
+      text-align: center;
+      font-weight: 600;
+    }
+     #result .summary {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center;
+        margin-bottom: var(--section-margin-y); /* More space */
+        flex-wrap: wrap;
+        gap: 1.5rem; /* Increased gap */
+     }
+     #result .summary > div {
+        flex-basis: 160px; /* Min width for score/band */
+     }
+
+     #result .score-display {
+        font-size: 3.5rem; /* Larger score */
+        font-weight: 700; /* Bolder score */
+        color: var(--primary-color);
+        line-height: 1.1;
+     }
+      #result .score-label {
+        font-size: 1rem; /* Slightly larger label */
+        color: var(--text-muted-color);
+        margin-top: 0.3rem;
+      }
+
+     #result .band-display {
+        font-size: 1.6rem; /* Slightly larger band */
+        font-weight: 700; /* Bolder band */
+        line-height: 1.3;
+     }
+      #result .band-label {
+        font-size: 1rem; /* Slightly larger label */
+        color: var(--text-muted-color);
+         margin-top: 0.3rem;
+      }
+
+     #result .explanation {
+        text-align: left;
+        margin-bottom: var(--section-margin-y); /* More space */
+     }
+
+     #result .explanation h3 {
+         color: var(--text-color);
+         margin-bottom: 0.75rem; /* Space */
+         border-bottom: none;
+         font-weight: 600;
+     }
+
+     #result ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 0.5rem;
+      text-align: left;
+    }
+     #result ul li {
+        margin-bottom: 0.8rem; /* More space between points */
+        padding-left: 1.8em;
+        position: relative;
+        line-height: 1.5; /* More space between lines */
+        color: var(--text-muted-color); /* Mute list text slightly */
+     }
+      .dark #result ul li {
+          color: var(--text-muted-color);
+      }
+
+     #result .explanation ul li::before {
+         content: "»"; /* Different icon for explanation */
+         color: var(--primary-color);
+         font-weight: bold;
+         left: 0.5em; /* Adjust position */
+         top: 0.1em;
+         font-size: 1.2em;
+     }
+       #result .tips-list ul li::before {
+         content: "💡"; /* Tips icon */
+         color: var(--secondary-color);
+          left: 0.2em; /* Adjust position */
+          top: 0;
+          font-size: 1.1em;
+       }
+      #result .tips-list ul li {
+         color: var(--text-color); /* Tips text is regular color */
+      }
+
+
+    /* Footer */
+    footer {
+      margin: var(--section-margin-y) auto 1rem auto; /* Use variable margin */
+      max-width: 800px;
+      background-color: var(--foreground-color);
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      box-shadow: 0 -4px 12px var(--shadow-color);
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    footer .nav {
+        margin-bottom: var(--section-margin-y); /* Use variable margin */
+         gap: 0.8rem; /* Increased gap */
+    }
+
+    footer section {
+      display: none;
+      padding-top: var(--section-margin-y); /* Use variable padding */
+      border-top: 1px solid var(--border-color);
+    }
+
+    footer section.active {
+      display: block;
+    }
+     footer h3 {
+        margin-bottom: 0.8rem; /* More space */
+        color: var(--primary-color);
+         font-weight: 600;
+     }
+     footer p {
+        color: var(--text-muted-color);
+        font-size: 0.95rem; /* Slightly larger text */
+         margin-bottom: 0.8rem; /* Space between paragraphs */
+     }
+      footer p:last-child {
+          margin-bottom: 0;
+      }
+      footer ul {
+          list-style: disc; /* Use discs for footer lists */
+          padding-left: 1.5rem;
+           color: var(--text-muted-color); /* Mute list text slightly */
+      }
+       footer ul li {
+           margin-bottom: 0.5rem;
+       }
+        .dark footer ul li {
+            color: var(--text-muted-color);
+        }
+
+    /* Responsiveness */
+    @media (max-width: 600px) {
+        body {
+            padding-top: 9.5rem; /* More space for larger header */
+        }
+        /* --- MODIFIED: Responsive Header Styling --- */
+        header {
+            flex-direction: column;
+            align-items: center; /* Center header items on small screen */
+            padding: 1rem 1rem; /* Adjust padding */
+            gap: 0.8rem;
+        }
+         header .title-block {
+             width: 100%;
+             align-items: center; /* Center title on small screens */
+             text-align: center; /* Center title text */
+         }
+        header h1 {
+            font-size: 1.6rem; /* Smaller title */
+        }
+         header .tagline {
+             font-size: 1rem;
+         }
+        header .header-controls {
+            width: 100%;
+            justify-content: space-between;
+            flex-grow: 0;
+             gap: 0.4rem; /* Smaller gap */
+        }
+         header .nav {
+            gap: 0.3rem; /* Smaller gap */
+             flex-grow: 1;
+             justify-content: center; /* Center nav buttons */
+         }
+         header .nav button, footer .nav button, #theme-toggle {
+            padding: 0.4rem 0.5rem; /* Reduced padding */
+            font-size: 0.8rem;
+         }
+         #theme-toggle {
+             font-size: 1.1rem;
+             padding: 0.3rem 0.5rem;
+         }
+          /* --- END MODIFIED Responsive Header Styling --- */
+
+
+        main {
+            margin-top: calc(var(--header-height) + var(--section-margin-y) * 1.5); /* Adjust margin */
+            padding: 0 0.8rem; /* Adjust padding */
+            gap: var(--section-margin-y) * 1.5; /* Adjust gap */
+        }
+        section {
+            padding: 1.5rem; /* Adjust padding */
+        }
+         section h1 {
+             font-size: 1.6rem;
+         }
+
+        /* --- MODIFIED: Responsive Input Grid --- */
+        .row {
+             grid-template-columns: 1fr; /* Stack */
+             gap: 0.6rem; /* Smaller gap */
+             padding: 0.8rem; /* Adjust padding */
+        }
+        .row input[type="number"] {
+            width: 100%; /* Make input full width */
+            text-align: left; /* Align hours to left when stacked */
+        }
+         .row select.app-select {
+             padding-right: 2.5rem; /* Adjust arrow space */
+              background-position: right 0.8rem center; /* Adjust arrow position */
+         }
+         .row button.rem {
+             width: 100%; /* Full width */
+             padding: 0.6rem 1rem;
+         }
+          /* --- END MODIFIED Responsive Input Grid --- */
+
+        #addRow, #calculate {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+             align-self: stretch; /* Full width buttons */
+        }
+         #addRow { margin-top: 0.8rem; }
+         #calculate { margin-top: 0.8rem; }
+
+        #result .summary {
+            flex-direction: column;
+            gap: 1.2rem; /* Smaller gap */
+        }
+        #result .score-display { font-size: 3rem; }
+        #result .band-display { font-size: 1.4rem; }
+
+        /* Adjust footer nav gap on small screens */
+        footer .nav {
+            gap: 0.3rem;
+             justify-content: space-around;
+        }
+         footer .nav button {
+             flex-basis: 20%; /* Give buttons space */
+             text-align: center;
+         }
+         footer {
+            padding: 1rem;
+         }
+          footer section {
+             padding-top: 1rem;
+         }
+          footer p {
+             font-size: 0.9rem;
+         }
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="title-block">
+        <h1>📱 Digital Wellness Check</h1>
+        <p class="tagline">Understand Your Screen Habits</p>
+    </div>
+    <div class="header-controls">
+        <div class="nav">
+          <button data-target="overview">Overview</button>
+          <button data-target="calculator" class="active">Calculator</button>
+          <button data-target="tips">Tips</button>
+          <button data-target="about">About</button> </div>
+        <button id="theme-toggle" title="Toggle theme">🌙</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="overview">
+       <h1>Understand Your Usage</h1>
+       <p class="intro">
+        Are you spending more time on your phone than you'd like? This tool helps you evaluate your daily screen time based on a research-informed approach to digital habits. Select apps/websites you use, enter the hours spent on them, and get a calculated **Dependence Score** from 0 to 100.
+      </p>
+      <p>
+        The scoring methodology goes beyond simple duration. It incorporates **app category weights** derived from behavioral insights into engagement patterns (like infinite scroll, autoplay, variable rewards) that can contribute differently to habit formation and potential dependence. Furthermore, the calculation considers the **total volume of time** spent, as even low-engagement activities can impact well-being if they consume excessive hours. By accounting for both the *nature* and the *volume* of your digital activities, the tool provides a more nuanced estimate of your dependence level.
+      </p>
+      <p>Based on your score, you'll see which estimated risk band you fall into—from "Healthy Use" to "Addicted"—and receive simple, actionable tips to help you build healthier digital habits and reclaim your time. This tool is for self-assessment and awareness; it is not a substitute for professional medical or psychological advice.</p>
+       <p><strong>Use the 'Calculator' tab to get started!</strong></p>
+    </section>
+
+    <section id="calculator" class="active"> <h1>Screen Time Calculator</h1>
+      <p class="intro">
+        Select the apps or general categories you spend time on and enter the approximate **daily hours** for each. Add at least two entries. Different activities are weighted based on potential addictiveness informed by behavioral research principles. The total volume of time also impacts the score.
+      </p>
+      <form id="calcForm">
+        <div id="rows">
+          <div class="row">
+            <select class="app-select" required>
+              <option value="" disabled selected>-- Select App/Category --</option>
+              <option value="instagram">Instagram</option>
+              <option value="facebook">Facebook</option>
+              <option value="tiktok">TikTok</option>
+              <option value="twitter">Twitter / X</option>
+              <option value="snapchat">Snapchat</option>
+              <option value="pinterest">Pinterest</option>
+              <option value="reddit">Reddit</option>
+              <option value="other_social">Other Social Media</option>
+              <option value="separator" disabled>──────────</option>
+              <option value="youtube">YouTube</option>
+              <option value="netflix">Netflix</option>
+              <option value="prime_video">Amazon Prime Video</option>
+              <option value="disney_plus">Disney+</option>
+              <option value="hulu">Hulu</option>
+              <option value="other_video">Other Streaming Video</option>
+              <option value="separator" disabled>──────────</option>
+              <option value="whatsapp">WhatsApp</option>
+              <option value="messenger">Facebook Messenger</option>
+              <option value="telegram">Telegram</option>
+              <option value="signal">Signal</option>
+              <option value="other_messaging">Other Messaging</option>
+               <option value="separator" disabled>──────────</option>
+              <option value="game_casual">Casual Game</option>
+              <option value="game_immersive">Immersive/Online Game</option>
+              <option value="news">News Apps/Sites</option>
+              <option value="shopping">Online Shopping</option>
+              <option value="utility">Utility/Productivity</option>
+              <option value="browser">General Web Browse</option>
+              <option value="other">Other Activity</option>
+            </select>
+            <input type="number" placeholder="Hours" class="hrs" min="0" step="0.1" required />
+            <button type="button" class="rem" title="Remove row">–</button>
+          </div>
+          <div class="row">
+             <select class="app-select" required>
+               <option value="" disabled selected>-- Select App/Category --</option>
+              <option value="instagram">Instagram</option>
+              <option value="facebook">Facebook</option>
+              <option value="tiktok">TikTok</option>
+              <option value="twitter">Twitter / X</option>
+              <option value="snapchat">Snapchat</option>
+              <option value="pinterest">Pinterest</option>
+              <option value="reddit">Reddit</option>
+              <option value="other_social">Other Social Media</option>
+              <option value="separator" disabled>──────────</option>
+              <option value="youtube">YouTube</option>
+              <option value="netflix">Netflix</option>
+              <option value="prime_video">Amazon Prime Video</option>
+              <option value="disney_plus">Disney+</option>
+              <option value="hulu">Hulu</option>
+              <option value="other_video">Other Streaming Video</option>
+              <option value="separator" disabled>──────────</option>
+              <option value="whatsapp">WhatsApp</option>
+              <option value="messenger">Facebook Messenger</option>
+              <option value="telegram">Telegram</option>
+              <option value="signal">Signal</option>
+              <option value="other_messaging">Other Messaging</option>
+               <option value="separator" disabled>──────────</option>
+              <option value="game_casual">Casual Game</option>
+              <option value="game_immersive">Immersive/Online Game</option>
+              <option value="news">News Apps/Sites</option>
+              <option value="shopping">Online Shopping</option>
+              <option value="utility">Utility/Productivity</option>
+              <option value="browser">General Web Browse</option>
+              <option value="other">Other Activity</option>
+            </select>
+            <input type="number" placeholder="Hours" class="hrs" min="0" step="0.1" required />
+            <button type="button" class="rem" title="Remove row">–</button>
+          </div>
+        </div>
+        <button type="button" id="addRow" title="Add another app/website">+ Add Row</button>
+        <button type="submit" id="calculate">Calculate Dependence Score</button>
+        <div id="error" class="form-error"></div>
+      </form>
+      <div id="result">
+          </div>
+    </section>
+
+    <section id="tips">
+      <h1>Tips Based on Your Score</h1>
+      <p class="intro">
+        Your calculated score provides an estimated current dependence level, serving as a starting point for cultivating healthier digital habits. The tips below offer general suggestions for each estimated risk band. Keep in mind that building better digital habits is an ongoing process, and implementing even small, consistent changes can lead to significant improvements over time. Use your specific score result from the calculator for tailored recommendations.
+      </p>
+       <div>
+        <h2>Healthy Use (Score 0-25)</h2>
+        <p>Excellent! Your screen time habits appear well-balanced and are likely not interfering negatively with other aspects of your life, such as work, relationships, or physical health. Maintaining this healthy balance requires ongoing awareness and conscious effort, especially as technology evolves and daily routines change. Celebrate your positive habits!</p>
+        <ul>
+            <li>Continue practicing mindful technology use and regularly check in with your usage patterns to stay aware.</li>
+            <li>Implement short, regular screen breaks, particularly during extended periods of work or leisure spent online.</li>
+            <li>Prioritize and protect your time for offline activities, hobbies, exercise, and face-to-face social interactions.</li>
+            <li>Maintain control over your attention by regularly reviewing and disabling non-essential app notifications that can trigger impulsive phone checking.</li>
+        </ul>
+      </div>
+       <div>
+        <h2>Moderate Dependence (Score 26-50)</h2>
+        <p>Your screen time is reaching a level where it could potentially reduce the time available for other valuable life activities like sleep, physical exercise, or in-person connections. This is a crucial stage to implement conscious strategies and set boundaries to prevent potentially problematic habits from developing further. Small adjustments now can make a big difference.</p>
+        <ul>
+            <li>Designate specific "screen-free" times and physical zones in your home (e.g., no phones at the dinner table, devices off limits in the bedroom for an hour before sleep).</li>
+            <li>Aggressively manage notifications: turn off non-essential alerts for many apps to reduce constant distractions and lessen the urge to pick up your phone impulsively.</li>
+            <li>Actively schedule time to replace digital activities with offline pursuits you enjoy or have been meaning to start. Aim to swap at least 30 minutes to an hour daily.</li>
+            <li>Explore features like grayscale mode or Do Not Disturb settings on your phone; reducing visual stimuli can make apps less inherently attention-grabbing and appealing.</li>
+            <li>Utilize your phone's built-in screen time tracking features to get a more accurate picture of where your time is spent versus your estimates.</li>
+        </ul>
+      </div>
+       <div>
+        <h2>High Dependence (Score 51-75)</h2>
+        <p>Screen time at this level is likely having a noticeable negative impact on various aspects of your daily life, such as academic/work productivity, sleep quality, personal relationships, or mental well-being. It indicates that technology use may be causing significant functional impairment. Taking serious, proactive steps to regain control is essential at this stage.</p>
+        <ul>
+            <li>Implement and adhere to strict daily time limits using your phone's operating system features (Digital Wellbeing/Screen Time) or third-party app blocking tools for the specific applications where you tend to lose the most time unproductively.</li>
+            <li>Create clear boundaries between your digital presence and your personal, family, and work/study time. Avoid passive phone checking or scrolling during important activities or conversations.</li>
+            <li>Make your bedroom a completely phone-free sanctuary to protect your sleep hygiene. Invest in a traditional alarm clock.</li>
+            <li>Increase your self-awareness by identifying the specific emotional or situational triggers that lead you to excessive phone use (e.g., boredom, stress, anxiety, loneliness, social comparison). Journaling can be helpful for this.</li>
+            <li>Practice delay gratification: When you feel an impulsive urge to open a distracting app, intentionally wait for 5-10 minutes and try to engage in a different, non-digital activity first.</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Addicted (Score 76-100)</h2>
+        <p>A score in this range strongly suggests that your screen time habits are significantly impairing important areas of your life, displaying characteristics often associated with behavioral addiction. This level of dependence is serious and likely requires significant effort and potentially external support to address effectively. Recognizing the impact and seeking help are critical steps.</p>
+        <ul>
+            <li>Acknowledge the severity of the issue and its impact on your life without judgment. Digital addiction is a complex challenge, and recognizing the need for help is a sign of strength and self-awareness.</li>
+            <li>It is highly recommended to seek professional support from a qualified therapist, counselor, or addiction specialist who has experience with behavioral addictions. They can provide tailored strategies, coping mechanisms, and support structures.</li>
+            <li>Consider implementing drastic measures if necessary: This might include temporarily or permanently deleting highly problematic apps, using aggressive blocking software (like Freedom or Cold Turkey - *external tools*) that make access difficult during set times, or even switching to a less-capable phone temporarily.</li>
+            <li>Communicate openly and honestly with trusted friends and family members about your struggles and your goals for reducing usage. Allowing them to provide support and accountability can be invaluable.</li>
+            <li>Actively schedule and commit to non-digital activities that bring you joy, fulfillment, or relaxation. Plan your day to include exercise, hobbies, social interaction, or time in nature to fill the void left by reduced screen time.</li>
+             <li>Explore the 'Resources' section in the footer for potential sources of support, information, and professional help.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="about">
+        <h1>About This Tool</h1>
+        <p class="intro">
+            This Digital Wellness Check tool was created to help individuals gain insightful awareness into their daily mobile screen time habits and understand the potential impact on their overall well-being. In our increasingly digital world, cultivating mindful and intentional technology use is paramount for health and balance. This tool is a starting point on that journey.
+        </p>
+        <p>
+            The calculator utilizes a **research-informed scoring system** designed to provide a more nuanced estimate than simply measuring total screen time. It incorporates **app category weights** based on behavioral science principles regarding digital engagement and habit formation. Different types of apps and online activities are assigned weights reflecting factors known to contribute to prolonged or automatic usage, such as the presence of endless scrolling feeds, autoplay video, variable reward systems common in social media and games, and the difference between passive consumption versus active creation or communication.
+        </p>
+         <p>
+             Crucially, the scoring also accounts for the **total volume of screen time**, recognizing that even activities with lower inherent addiction potential can become problematic if they consume an excessive number of hours daily. By blending the *type* of activity (weighted hours) with the *total duration* (raw hours), the tool aims to offer a more comprehensive, though still simplified, perspective on potential digital dependence.
+         </p>
+        <p>
+            **Important Disclaimer:** This tool provides an *estimated* dependence score solely for the purpose of self-assessment and raising awareness. It is not a clinical diagnostic instrument. Digital addiction is a complex behavioral health issue, and any concerns about your screen time usage, its impact on your life, or your mental health should be discussed with a qualified healthcare professional, therapist, or counselor. We encourage you to use the results as a prompt for reflection and positive change.
+        </p>
+    </section>
+     </main>
+
+   <footer>
+    <div class="nav">
+      <button data-target="privacy" class="active">Privacy</button>
+      <button data-target="disclaimer">Disclaimer</button>
+      <button data-target="contact">Contact</button>
+      <button data-target="resources">Resources</button> </div>
+    <section id="privacy" class="active">
+      <h3>Privacy Policy</h3>
+      <p>Your privacy is of the utmost importance to us. This Digital Wellness Check tool has been developed with a strong commitment to your data security and confidentiality. The tool operates entirely within your web browser using client-side JavaScript. This means that all calculations, the data you input (such as app selections and hours), and the resulting dependence score are processed and stored only on your local device (your computer or smartphone) temporarily while the page is open.</p>
+      <p>Crucially, **no data entered into the calculator is ever transmitted over the internet to our server, collected, stored in any database, or shared with any third parties.** There is no backend system collecting your personal usage information. Once you close or refresh the web page, all the input data you provided is automatically cleared from your device's memory. You can therefore use this tool with complete confidence and peace of mind, knowing that your personal screen time usage patterns and results remain entirely private and anonymous.</p>
+    </section>
+    <section id="disclaimer">
+      <h3>Disclaimer</h3>
+      <p>This Mobile Addiction Checker and Screen Time Calculator tool is offered strictly for informational and purposes of self-assessment only. The dependence score and risk band provided are estimations based on self-reported data and a simplified, weighted formula that draws on general principles from behavioral insights into digital habits. **It is emphatically NOT intended to be, and should not be used as, a substitute for professional medical advice, diagnosis, or treatment from a qualified healthcare provider.**</p>
+       <p>Problematic screen time and potential digital addiction are complex behavioral health issues that can have significant impacts on an individual's life. If you have any concerns whatsoever about your screen time usage, its effects on your daily life, relationships, work, study, or your overall mental and physical health, we strongly urge you to consult with a qualified healthcare professional, such as a doctor, therapist, counselor, or psychologist. Reliance upon the information and results obtained from this tool is solely at your own risk, and the creators are not liable for any consequences arising from its use.</p>
+    </section>
+    <section id="contact">
+      <h3>Contact</h3>
+      <p>We appreciate your interest in the Digital Wellness Check tool and welcome your feedback, questions, and suggestions. Your input is valuable in helping us improve the tool and the information it provides. Please note that we cannot offer personal advice, diagnoses, or medical consultations through this contact channel. If you have questions related to the tool's functionality, content, or have suggestions for future updates, please feel free to reach out to us via email.</p>
+       <p>Please send your inquiries to: <a href="mailto:feedback.digitalwellness@example.com">feedback.digitalwellness@example.com</a>. We endeavor to review and respond to relevant messages as promptly as our resources allow. Thank you for helping us make this tool better.</p>
+    </section>
+     <section id="resources">
+        <h3>Further Resources & Help</h3>
+        <p>If your score from the Digital Wellness Check indicates a potential for high dependence or addiction, or if you are finding it challenging to manage your screen time habits effectively, please know that you are not alone and there are many resources available to provide support and guidance. Taking the step to seek help is a sign of strength and a crucial part of moving towards healthier digital well-being.</p>
+        <p>Consider exploring the following types of resources:</p>
+        <ul>
+            <li><strong>Professional Help:</strong> Licensed therapists, counselors, psychologists, or clinical social workers specializing in behavioral addictions or technology overuse can provide personalized assessment, therapy (like CBT), and coping strategies tailored to your specific situation.</li>
+            <li><strong>Digital Wellbeing Tools & Apps:</strong> Explore the features built into your smartphone's operating system (e.g., Digital Wellbeing on Android, Screen Time on iOS) for tracking, limiting, and setting downtime. Consider third-party apps designed for focus, blocking distracting websites/apps, or scheduling digital detox periods (examples include Freedom, Forest, Cold Turkey - *mentioning these are examples of external apps, not specific endorsements*).</li>
+            <li><strong>Educational Materials:</strong> Increase your understanding of digital habits and their impact by reading books, articles, and research from reputable sources on screen time, dopamine, persuasive design, and the psychology of technology use.</li>
+            <li><strong>Support Communities:</strong> Connecting with others who are working towards similar goals can be incredibly supportive. Look for online forums, social media groups, or local community groups focused on digital minimalism, digital detox, or managing technology use.</li>
+        </ul>
+         <p>Taking proactive steps to address problematic screen time is an important investment in your mental, physical, and social well-being. You have the power to change your relationship with technology.</p>
+     </section>
+      </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- App Weights Mapping ---
+        // Assign weights based on app type/category. These weights are based on general
+        // insights from behavioral research about digital engagement patterns (e.g., infinite scroll,
+        // passive consumption, variable rewards) which can contribute differently to habit formation.
+        // These are simplified representations of complex behavioral factors.
+        const appWeights = {
+            'instagram': 1.5, 'facebook': 1.4, 'tiktok': 1.6, // Higher weight for short-form video & engaging social feeds
+            'twitter': 1.3, 'snapchat': 1.2, 'pinterest': 1.1, 'reddit': 1.3, // Social/Community varying engagement
+            'other_social': 1.2,
+            'youtube': 1.5, 'netflix': 1.5, 'prime_video': 1.5, 'disney_plus': 1.5, 'hulu': 1.5, // Higher weight for passive video consumption
+            'other_video': 1.4,
+            'whatsapp': 1.0, 'messenger': 1.1, 'telegram': 1.0, 'signal': 1.0, // Lower weight for direct messaging, slightly higher for broader platforms
+            'other_messaging': 1.0,
+            'game_casual': 1.2, 'game_immersive': 1.5, // Higher weight for immersive/online games with progression/social elements
+            'news': 1.0, 'shopping': 1.1, 'utility': 0.8, 'browser': 1.0, // Lower weights for potentially more functional uses, utility lowest
+            'other': 1.0,
+            'default': 1.0 // Default weight if app not found
+        };
+
+      // --- Navigation ---
+      function setupNavigation(navContainerSelector, sectionContainerSelector, activeClass) {
+        const navContainer = document.querySelector(navContainerSelector);
+        const sectionContainer = document.querySelector(sectionContainerSelector);
+
+        if (!navContainer || !sectionContainer) return;
+
+        navContainer.addEventListener('click', (e) => {
+          if (e.target.tagName === 'BUTTON' && e.target.dataset.target) {
+            const targetId = e.target.dataset.target;
+            const targetSection = sectionContainer.querySelector(`#${targetId}`);
+
+            navContainer.querySelectorAll('button').forEach(btn => btn.classList.remove(activeClass));
+            // Add a small delay before hiding sections to allow transition
+            sectionContainer.querySelectorAll(':scope > section').forEach(sec => {
+                 sec.classList.remove('active');
+                // Optional: Hide after transition if needed for complex layouts, but opacity/transform handles visual part
+                // setTimeout(() => { sec.style.display = 'none'; }, 400);
+            });
+
+            e.target.classList.add(activeClass);
+            if (targetSection) {
+               // Optional: Show before transition if needed, but opacity/transform handles visual part
+               // targetSection.style.display = 'block';
+               // Add small delay before adding 'active' to ensure display:block is processed if hiding logic is used
+               setTimeout(() => {
+                  targetSection.classList.add('active');
+                   // Scroll to the section if not header/footer nav and section is in main
+                   if (sectionContainer.tagName === 'MAIN') {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                   }
+               }, 50); // Small delay
+            }
+          }
+        });
+         // Activate the initial section on load based on the active class set in HTML
+        const initialActiveButton = navContainer.querySelector(`button.${activeClass}`);
+        if(initialActiveButton) {
+             const targetId = initialActiveButton.dataset.target;
+             const targetSection = sectionContainer.querySelector(`#${targetId}`);
+             if(targetSection) {
+                 targetSection.classList.add('active');
+                 // Do not scroll on initial load unless hash is present
+             }
+        }
+      }
+
+      // Updated setupNavigation calls to include new sections
+      setupNavigation('header .nav', 'main', 'active');
+      setupNavigation('footer .nav', 'footer', 'active');
+
+      // --- Theme Toggle ---
+      const themeToggle = document.getElementById('theme-toggle');
+      const currentTheme = localStorage.getItem('theme');
+
+      if (currentTheme === 'dark') {
+        document.body.classList.add('dark');
+        themeToggle.textContent = '☀️';
+      } else {
+        themeToggle.textContent = '🌙';
+      }
+
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        let theme = 'light';
+        if (document.body.classList.contains('dark')) {
+          theme = 'dark';
+          themeToggle.textContent = '☀️';
+        } else {
+          themeToggle.textContent = '🌙';
+        }
+        localStorage.setItem('theme', theme);
+      });
+
+
+      // --- Calculator Row Management ---
+      const rowsContainer = document.getElementById('rows');
+      const addRowButton = document.getElementById('addRow');
+      // Ensure we clone the correct template row structure
+      const rowTemplate = document.querySelector('#rows .row').cloneNode(true);
+
+      addRowButton.addEventListener('click', () => {
+        const newRow = rowTemplate.cloneNode(true);
+        newRow.querySelectorAll('input').forEach(input => input.value = '');
+        newRow.querySelector('select.app-select').selectedIndex = 0; // Reset select to default
+        rowsContainer.appendChild(newRow);
+         // Scroll the new row into view if it's off-screen
+        newRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+
+      rowsContainer.addEventListener('click', (e) => {
+        // Ensure we don't remove the last row
+        if (e.target.classList.contains('rem') && rowsContainer.children.length > 1) {
+          e.target.closest('.row').remove();
+        }
+      });
+
+
+      // --- Calculation Logic ---
+      const calcForm = document.getElementById('calcForm');
+      const resultDiv = document.getElementById('result');
+      const errorDiv = document.getElementById('error');
+
+      calcForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        errorDiv.textContent = '';
+        resultDiv.innerHTML = ''; // Clear previous result
+
+        let totalRawHours = 0;
+        let totalWeightedHours = 0;
+        let validRows = 0;
+        const allRows = rowsContainer.querySelectorAll('.row');
+        let highWeightAppsUsed = false; // Flag to check if high-weight apps were used
+
+        allRows.forEach(row => {
+          const appSelect = row.querySelector('.app-select');
+          const hoursInput = row.querySelector('.hrs');
+
+          const selectedApp = appSelect.value;
+          const hours = parseFloat(hoursInput.value);
+
+          // Check if a valid app is selected and hours are valid
+          // Ensure 'separator' value is skipped
+          if (selectedApp && selectedApp !== 'separator' && !isNaN(hours) && hours > 0) { // Require hours > 0 for valid row
+            const weight = appWeights[selectedApp] || appWeights['default']; // Get weight or default
+            totalRawHours += hours;
+            totalWeightedHours += hours * weight;
+            validRows++;
+            // Check if app has a high weight (e.g., Video, TikTok) based on a threshold
+            if (weight >= 1.4) {
+                highWeightAppsUsed = true;
+            }
+          }
+        });
+
+        if (validRows < 1) { // Allow calculating with just one entry now that total hours are factored in
+          errorDiv.textContent = 'Please select an app/category and enter valid hours (> 0) for at least one row.';
+          return;
+        }
+        // If only one row, calculate, otherwise require at least two valid entries with hours > 0
+         if (validRows < allRows.length && allRows.length > 1) {
+              // Check if any row has valid input (app selected and hours > 0)
+             let hasAnyValidInput = false;
+              allRows.forEach(row => {
+                  const appSelect = row.querySelector('.app-select');
+                  const hoursInput = row.querySelector('.hrs');
+                  if (appSelect.value && appSelect.value !== 'separator' && parseFloat(hoursInput.value) > 0) {
+                      hasAnyValidInput = true;
+                  }
+              });
+             if (!hasAnyValidInput || validRows < 1) {
+                errorDiv.textContent = 'Please ensure all rows with selected apps have hours entered (> 0), or remove empty rows.';
+                return;
+             }
+         }
+
+
+        // --- Scoring Logic (Blended Approach: Weighted Hours + Total Raw Hours) ---
+        // This formula combines the impact of the type of apps used (weighted hours)
+        // and the sheer volume of time spent (raw hours).
+        // weighted_component = totalWeightedHours * WeightFactor1
+        // raw_component = totalRawHours * WeightFactor2
+        // Score = (weighted_component + raw_component) / ScalingFactor
+        // Example: With WeightFactor1=0.8, WeightFactor2=0.2, ScalingFactor=0.1
+        // If Average Weight is 1 (Weighted = Raw): Score approx (Raw*0.8 + Raw*0.2) / 0.1 = Raw / 0.1 = Raw * 10
+        // If 5 Raw Hours (Avg Weight 1): Score = (5*0.8 + 5*0.2) / 0.1 = (4 + 1) / 0.1 = 5 / 0.1 = 50 (Moderate)
+        // If 10 Raw Hours (Avg Weight 1): Score = (10*0.8 + 10*0.2) / 0.1 = (8 + 2) / 0.1 = 10 / 0.1 = 100 (Addicted)
+        // These factors and scaling are estimates based on desired score distribution, not clinical data.
+
+        const weightFactor1 = 0.8; // Weight given to weighted hours
+        const weightFactor2 = 0.2; // Weight given to raw hours (penalty for total time)
+        const scalingFactor = 0.1; // Divisor to scale the result to 0-100 range
+
+        const score = Math.min(100, Math.round((totalWeightedHours * weightFactor1 + totalRawHours * weightFactor2) / scalingFactor));
+
+        // --- END Scoring Logic ---
+
+
+        let band = '';
+        let tips = [];
+        let explanationPoints = [];
+
+        // Determine Band, Tips, and Explanation Points based on NEW score ranges
+        // The text explains what these scores mean in terms of the weighted time and total time.
+        if (score <= 25) {
+          band = 'Healthy Use';
+          explanationPoints = [
+              `Your estimated score (${score}/100) suggests a low level of potential digital dependence.`,
+              `Your screen time, considering both total raw hours (${totalRawHours.toFixed(1)}) and weighted hours (${totalWeightedHours.toFixed(1)}), indicates a healthy relationship with technology.`,
+              "This suggests you maintain a good balance between online activities and other aspects of your life.",
+              "Your digital habits are likely sustainable and not causing significant disruption."
+          ];
+          tips = [
+            "Continue practicing mindful technology use and celebrate your balanced habits!",
+            "Implement short screen breaks during any extended digital sessions to maintain eye health and focus.",
+            "Actively preserve time for physical activities, hobbies, and in-person social connections offline – these are crucial for overall well-being.",
+            "Regularly review notification settings to ensure they serve your productivity and focus, rather than constantly demanding your attention."
+          ];
+        } else if (score <= 50) {
+          band = 'Moderate Dependence';
+           explanationPoints = [
+              `Your estimated score (${score}/100) falls into the moderate dependence range.`,
+              `Your screen time, accounting for both raw hours (${totalRawHours.toFixed(1)}) and the types of apps used (weighted hours: ${totalWeightedHours.toFixed(1)}), indicates technology is a noticeable part of your day.`,
+              `While not necessarily problematic for everyone, this level suggests screen time could potentially displace time spent on other important activities like sleep, exercise, or face-to-face interactions.`,
+              highWeightAppsUsed ? "Usage of high-engagement app categories (like video streaming or social media feeds) likely contributes significantly to this score due to their design patterns." : "The cumulative time spent across various app categories, even if individually low-engagement, is a key factor at this level."
+          ];
+          tips = [
+            "Establish clear screen-free times and physical zones in your home (e.g., no phones at the dinner table, devices off limits in the bedroom for the hour before sleep).",
+            "Drastically reduce or turn off non-essential notifications for most apps to lessen constant distractions and reduce the automatic urge to check your phone.",
+            "Schedule specific blocks of time for offline activities you enjoy or have been postponing, and treat these appointments as important commitments.",
+            "Experiment with phone features like grayscale mode or Do Not Disturb settings to make your phone's interface less stimulating and potentially less appealing.",
+            "Use your phone's built-in screen time tracking features to gain a more accurate understanding of precisely where your time is being spent."
+          ];
+        } else if (score <= 75) {
+          band = 'High Dependence';
+          explanationPoints = [
+              `Your estimated score (${score}/100) indicates a high level of potential digital dependence.`,
+              `Your screen time habits, considering both raw hours (${totalRawHours.toFixed(1)}) and the types of apps used (weighted hours: ${totalWeightedHours.toFixed(1)}), are substantial and strongly suggest technology use may be negatively impacting various aspects of your daily functioning.`,
+              "This level of engagement can interfere with productivity, disrupt sleep patterns, strain personal relationships, and affect overall mental and physical well-being.",
+               highWeightAppsUsed ? "Significant time spent on highly engaging app categories (social media feeds, video streaming, immersive games) is a major factor driving this high score due to their habit-forming design." : "Even if your usage is spread across different app types, the high total volume of screen time is a key indicator of potential dependence.",
+              `The combination of your reported raw hours and the weighting of specific app types highlights areas of high engagement that warrant attention.`
+          ];
+          tips = [
+            "Implement and strictly adhere to daily time limits for your most problematic apps using your phone's operating system features or third-party app blocking tools.",
+            "Create clear boundaries between your digital life and personal, family, and work/study time. Avoid passively using your phone during important activities or conversations.",
+            "Make your bedroom a sacred phone-free sanctuary to protect your sleep hygiene and improve rest quality. Consider using a traditional alarm clock.",
+            "Increase your self-awareness by identifying the specific emotional or situational triggers that lead you to excessive phone use (e.g., boredom, stress, anxiety, loneliness, social comparison). Consider journaling your usage and feelings.",
+            "Practice delaying gratification: When you feel an impulsive urge to open a distracting app, intentionally pause for 5-10 minutes and try to engage in a different, non-digital activity first. Observe if the urge diminishes.",
+             "Consider talking to a trusted friend, family member, or mentor about your goals for reducing screen time for added accountability and support."
+          ];
+        } else { // score > 75
+          band = 'Addicted';
+           explanationPoints = [
+              `Your estimated score (${score}/100) is very high, strongly suggesting potential digital addiction requiring attention.`,
+              `Your screen time habits, based on both raw hours (${totalRawHours.toFixed(1)}) and the types of apps used (weighted hours: ${totalWeightedHours.toFixed(1)}), indicate that digital use is likely causing significant functional impairment in multiple areas of your life, such as work, relationships, physical health, or mental well-being.`,
+               highWeightAppsUsed ? "Very heavy usage of highly engaging app categories with addictive design features is a critical factor contributing to this severe level of potential dependence." : "Regardless of the specific app types, the extremely high total volume of screen time is a strong indicator of severe dependence and potential addiction.",
+              `The substantial score reflects a pattern of technology use that is likely difficult to control and may be negatively impacting your quality of life.`
+          ];
+          tips = [
+            "Acknowledge the severity of the issue and its potential impact on your life. Recognizing the need for change is a crucial first step, and seeking help is a sign of courage.",
+            "It is highly recommended to seek professional support from a qualified therapist, counselor, psychologist, or addiction specialist who has experience with behavioral addictions. They can provide personalized assessment, evidence-based therapies (like Cognitive Behavioral Therapy), and coping strategies tailored to your unique situation.",
+            "Consider implementing significant changes, such as temporarily or permanently deleting highly problematic apps from your device. Utilize aggressive app and website blocking software (like Freedom or Cold Turkey - *external tools*) that make accessing distracting content difficult or impossible during set times.",
+            "Communicate openly and honestly with trusted friends and family members about your struggles and your goals for reducing screen time. Build a support network and allow them to help hold you accountable.",
+            "Proactively structure your day with planned non-digital activities that provide fulfillment, connection, and relaxation (e.g., exercise, hobbies, in-person social interaction, time in nature). These activities can help fill the void left by reduced screen time and help build healthier routines.",
+             "Explore the 'Resources' section in the footer for information on potential sources of professional help, support groups, and tools for managing screen time."
+          ];
+        }
+
+        // Display Detailed Results
+        resultDiv.innerHTML = `
+          <h2>Your Dependence Analysis</h2>
+
+          <div class="summary">
+              <div>
+                  <div class="score-display">${score}/100</div>
+                  <div class="score-label">Dependence Score</div>
+              </div>
+              <div>
+                  <div class="band-display">${band}</div>
+                   <div class="band-label">Estimated Risk Level</div>
+              </div>
+          </div>
+
+          <div class="explanation">
+              <h3>Understanding Your Score:</h3>
+              <p>Your score is calculated using a formula that considers both the total amount of time you spend on your phone (raw hours) and the nature of the apps you use. Apps are assigned weights based on principles from behavioral research regarding their potential for engagement and habit formation. Higher weights are given to apps with features like endless feeds, autoplay, or variable rewards, which are known to contribute to prolonged or automatic usage patterns.</p>
+              <ul>
+                  ${explanationPoints.map(point => `<li>${point}</li>`).join('')}
+              </ul>
+          </div>
+
+          <div class="tips-list">
+              <h3>Recommended Actions:</h3>
+              <ul>
+                  ${tips.map(tip => `<li>${tip}</li>`).join('')}
+              </ul>
+          </div>
+        `;
+        // Scroll to the result
+        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      // Add a small delay before scrolling on initial page load if hash is present
+      if(window.location.hash) {
+         setTimeout(() => {
+            const target = document.querySelector(window.location.hash);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+         }, 100); // Small delay
+      }
+
+
+    }); // End DOMContentLoaded
+  </script>
+
+</body>
+</html>
