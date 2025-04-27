@@ -25,6 +25,12 @@
 
       /* Added for section separation */
       --section-margin-y: 1.5rem;
+
+       /* Added for footer link visibility */
+       --footer-link-color-light: var(--text-color); /* Dark text on light background */
+       --footer-link-color-dark: var(--text-color); /* Light text on dark background */
+       --footer-hover-bg-light: rgba(0, 0, 0, 0.1); /* Subtle dark hover on light bg */
+       --footer-hover-bg-dark: rgba(255, 255, 255, 0.1); /* Subtle light hover on dark bg */
     }
 
     /* Dark theme variables */
@@ -38,6 +44,11 @@
       --primary-color: #7aafff; /* Lighter royalblue for dark mode */
        /* Added for dark mode focus shadows */
       --primary-color-rgb: 122, 175, 255; /* lighter blue */
+       /* Added for footer link visibility */
+       --footer-link-color-light: var(--text-color); /* Dark text on light background */
+       --footer-link-color-dark: var(--text-color); /* Light text on dark background */
+       --footer-hover-bg-light: rgba(0, 0, 0, 0.1); /* Subtle dark hover on light bg */
+       --footer-hover-bg-dark: rgba(255, 255, 255, 0.1); /* Subtle light hover on dark bg */
     }
 
     /* Basic Reset */
@@ -128,10 +139,10 @@
       flex-wrap: wrap; /* Allow nav buttons to wrap */
     }
 
-    header .nav button, footer .nav button, #theme-toggle {
+    header .nav button, #theme-toggle {
       background: none;
       border: none;
-      color: var(--foreground-color);
+      color: var(--foreground-color); /* Header nav buttons are white */
       font-weight: 600; /* Semi-bold */
       padding: 0.6rem 1rem; /* Increased padding */
       cursor: pointer;
@@ -140,29 +151,24 @@
       font-size: 0.95rem; /* Slightly larger font */
     }
     .dark header .nav button, .dark header #theme-toggle {
-       color: var(--text-color); /* Use text color in dark mode header nav */
-    }
-    .dark footer .nav button {
-        color: var(--text-color);
+       color: var(--text-color); /* Use text color in dark mode header nav (which is light) */
     }
 
 
     header .nav button.active {
       background-color: rgba(255, 255, 255, 0.3);
     }
+    /* Footer active button styling remains the same */
     footer .nav button.active {
         background-color: var(--border-color);
         color: var(--primary-color);
     }
 
-    header .nav button:hover, footer .nav button:hover, #theme-toggle:hover {
+    header .nav button:hover, #theme-toggle:hover {
       background-color: rgba(255, 255, 255, 0.2);
     }
     .dark header .nav button:hover, .dark header #theme-toggle:hover {
         background-color: rgba(0, 0, 0, 0.2); /* Darken slightly on hover in dark mode */
-    }
-     .dark footer .nav button:hover {
-        background-color: var(--border-color); /* Use border color as hover bg in dark footer */
     }
 
 
@@ -505,6 +511,41 @@
          gap: 0.8rem; /* Increased gap */
     }
 
+    /* --- MODIFIED: Footer Nav Button Styling --- */
+    footer .nav button {
+      background: none;
+      border: none;
+      /* Use specific variables for light/dark mode text color */
+      color: var(--footer-link-color-light); /* Default color for light mode */
+      font-weight: 600; /* Semi-bold */
+      padding: 0.6rem 1rem; /* Increased padding */
+      cursor: pointer;
+      border-radius: 8px; /* Slightly smaller radius */
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-size: 0.95rem; /* Slightly larger font */
+    }
+    /* Apply dark mode color */
+    .dark footer .nav button {
+        color: var(--footer-link-color-dark);
+    }
+
+    /* Active button styling */
+    footer .nav button.active {
+        background-color: var(--border-color);
+        color: var(--primary-color);
+    }
+
+    /* Hover button styling */
+    footer .nav button:hover {
+        /* Use specific variables for light/dark mode hover background */
+        background-color: var(--footer-hover-bg-light); /* Hover background for light mode */
+    }
+     .dark footer .nav button:hover {
+        background-color: var(--footer-hover-bg-dark); /* Hover background for dark mode */
+    }
+    /* --- END MODIFIED Footer Nav Button Styling --- */
+
+
     footer section {
       display: none;
       padding-top: var(--section-margin-y); /* Use variable padding */
@@ -573,7 +614,7 @@
              flex-grow: 1;
              justify-content: center; /* Center nav buttons */
          }
-         header .nav button, footer .nav button, #theme-toggle {
+         header .nav button, #theme-toggle {
             padding: 0.4rem 0.5rem; /* Reduced padding */
             font-size: 0.8rem;
          }
@@ -674,7 +715,7 @@
     <section id="overview">
        <h1>Understand Your Usage</h1>
        <p class="intro">
-        Are you spending more time on your phone than you'd like? This tool helps you evaluate your daily screen time based on a research-informed approach to digital habits. Select apps/websites you use, enter the hours spent on them, and get a calculated **Dependence Score** from 0 to 100.
+        Are you spending more time on your phone than you'd like? This tool helps you evaluate your daily screen time based on a research-informed approach to digital habits. Select apps, enter hours, get your Dependence Score (0–100), risk band, and detailed tips.
       </p>
       <p>
         The scoring methodology goes beyond simple duration. It incorporates **app category weights** derived from behavioral insights into engagement patterns (like infinite scroll, autoplay, variable rewards) that can contribute differently to habit formation and potential dependence. Furthermore, the calculation considers the **total volume of time** spent, as even low-engagement activities can impact well-being if they consume excessive hours. By accounting for both the *nature* and the *volume* of your digital activities, the tool provides a more nuanced estimate of your dependence level.
@@ -1137,7 +1178,7 @@
             "Acknowledge the severity of the issue and its potential impact on your life. Recognizing the need for change is a crucial first step, and seeking help is a sign of courage.",
             "It is highly recommended to seek professional support from a qualified therapist, counselor, psychologist, or addiction specialist who has experience with behavioral addictions. They can provide personalized assessment, evidence-based therapies (like Cognitive Behavioral Therapy), and coping strategies tailored to your unique situation.",
             "Consider implementing significant changes, such as temporarily or permanently deleting highly problematic apps from your device. Utilize aggressive app and website blocking software (like Freedom or Cold Turkey - *external tools*) that make accessing distracting content difficult or impossible during set times.",
-            "Communicate openly and honestly with trusted friends and family members about your struggles and your goals for reducing screen time. Build a support network and allow them to help hold you accountable.",
+            "Communicate openly and honestly with trusted friends and family members about your struggles and your goals for reducing usage. Build a support network and allow them to help hold you accountable.",
             "Proactively structure your day with planned non-digital activities that provide fulfillment, connection, and relaxation (e.g., exercise, hobbies, in-person social interaction, time in nature). These activities can help fill the void left by reduced screen time and help build healthier routines.",
              "Explore the 'Resources' section in the footer for information on potential sources of professional help, support groups, and tools for managing screen time."
           ];
